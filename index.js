@@ -73,6 +73,6 @@ app.get('/api/QuanLyKhoaHoc/LayKhoaHocTheoDanhMuc', async (req, res) => {
     }
 })
 
-app.listen(3005, () => console.log())
+app.listen(process.env.PORT || 3005, () => console.log())
 
 
