@@ -42,8 +42,8 @@ app.post("/api/QuanLyKhoaHoc/ThemKhoaHoc", (req, res) => {
         .catch(error => res.send({ success: false, message: error }))
 })
 
-app.delete("/api/QuanLyKhoaHoc/XoaKhoaHoc?:", async (req, res) => {
-    const { _id } = req.params;
+app.delete("/api/QuanLyKhoaHoc/XoaKhoaHoc", async (req, res) => {
+    const _id = req.query._id;
     Course.findOneAndRemove(_id)
         .then(course => res.send({ success: true, data: course }))
         .catch(error => res.send({ success: false, message: error }))
