@@ -91,7 +91,7 @@ app.post('/api/QuanLyNguoiDung/DangKy', async (req, res) => {
     try {
         const { hoTen, taiKhoan, matKhau, soDienThoai, email } = req.body;
         const user = new User({ hoTen, taiKhoan, matKhau, soDienThoai, email });
-        user.save()
+        await user.save()
         res.status(200).send({ success: true, user })
 
     } catch (error) {
