@@ -95,11 +95,11 @@ app.post('/api/QuanLyNguoiDung/DangKy', async (req, res) => {
         if (newUser) {
             res.status(200).send({ success: true, newUser })
         } else {
-            res.status(200).set({ success: false, message: 'Email is valid' })
+            res.status(200).send({ success: false, message: 'Email is valid' })
         }
 
     } catch (error) {
-        res.status(error.status).set({ success: false, error })
+        res.status(error.status).send({ success: false, error })
     }
 })
 
