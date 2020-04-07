@@ -5,7 +5,7 @@ const UserSchema = new mongoose.Schema({
     taiKhoan: { type: String, unique: true },
     matKhau: String,
     soDienThoai: String,
-    email: { type: String, unique: true },
+    email: { type: String },
     ngayTao: { type: Date, default: Date.now },
     maLoaiNguoiDung: { type: String, default: 'HV' },
     mangKhoaHoc: Array,
