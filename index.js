@@ -87,13 +87,16 @@ app.get('/api/QuanLyNguoiDung/LayDanhSachNguoiDung', async (req, res) => {
     }
 })
 
-app.post('/api/QuanLyNguoiDung/DangKy', (req, res) => {
-    const { hoTen, taiKhoan, matKhau, soDienThoai, email } = req.body;
+app.post('/api/QuanLyNguoiDung/DangKy', async (req, res) => {
+    try {
+        const { hoTen, taiKhoan, matKhau, soDienThoai, email } = req.body;
+        const user = new User({ hoTen, taiKhoan, matKhau, soDienThoai, email });
+        user.save()
+        res.status(200).send({ success: true, user })
 
-    const user = new User({ hoTen, taiKhoan, matKhau, soDienThoai, email });
-    user.save()
-        .then(newUser => res.status(200).send({ success: true, newUser }))
-        .catch(error => res.status(error.status).send({ success: false, error }))
+    } catch (error) {
+        res.status(error.status).send({ success: false, error })
+    }
 })
 
 app.post('/api/QuanLyNguoiDung/DangNhap', async (req, res) => {
