@@ -11,5 +11,5 @@ const UserSchema = new mongoose.Schema({
     mangKhoaHoc: Array,
 });
 
-const UserSchema = mongoose.model('User', UserSchema);
+const User = mongoose.model('User', UserSchema);
 module.exports = User;
