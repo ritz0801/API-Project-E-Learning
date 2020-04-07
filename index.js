@@ -92,12 +92,7 @@ app.post('/api/QuanLyNguoiDung/DangKy', async (req, res) => {
         const { hoTen, taiKhoan, matKhau, soDienThoai, email } = req.body;
         const user = new User({ hoTen, taiKhoan, matKhau, soDienThoai, email });
         const newUser = await user.save();
-        if (newUser) {
-            res.status(200).send({ success: true, newUser })
-        } else {
-            res.status(200).send({ success: false, message: 'Email is valid' })
-        }
-
+        res.status(200).send({ success: true, newUser })
     } catch (error) {
         res.status(error.status).send({ success: false, error })
     }
