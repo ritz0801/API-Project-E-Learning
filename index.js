@@ -1,9 +1,12 @@
 const mongoose = require('mongoose');
 const Course = require('./module/courses');
+const User = require('./module/user');
 const express = require('express');
-const app = express();
 const cors = require('cors')
 const { json } = require("body-parser");
+const jwt = require('jsonwebtoken');
+const bcrypt = require('bcryptjs');
+const app = express();
 
 
 app.use(json());
@@ -70,6 +73,38 @@ app.get('/api/QuanLyKhoaHoc/LayKhoaHocTheoDanhMuc', async (req, res) => {
 
     } catch (error) {
         res.status(error.status).set({ success: false, err })
+    }
+})
+
+//USER
+
+app.post('/api/QuanLyNguoiDung/DangKy', async (req, res) => {
+    try {
+        const { hoTen, taiKhoan, matKhau, soDienThoai, email } = req.body;
+        const user = new User({ hoTen, taiKhoan, matKhau, soDienThoai, email });
+        const newUser = await user.save();
+        res.status(200).send({ success: true, newUser })
+    } catch (error) {
+        res.status(error.status).set({ success: false, error })
+    }
+})
+
+app.post('/api/QuanLyNguoiDung/DangNhap', async (req, res) => {
+    try {
+        const { taiKhoan, matKhau } = req.body;
+        const user = await User.findOne({ taiKhoan });
+        if (!user) {
+            throw new Error();
+        }
+
+        const passwordValidated = await bcrypt.compare(matKhau, user.matKhau);
+        if (!passwordValidated) {
+            throw new Error();
+        }
+
+        res.status(200).send({ success: true, user })
+    } catch (error) {
+        res.status(error.status).set({ success: false, error })
     }
 })
 
