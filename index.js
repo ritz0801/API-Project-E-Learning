@@ -89,6 +89,7 @@ app.get('/api/QuanLyNguoiDung/LayDanhSachNguoiDung', async (req, res) => {
 
 app.post('/api/QuanLyNguoiDung/DangKy', (req, res) => {
     const { hoTen, taiKhoan, matKhau, soDienThoai, email } = req.body;
+
     const user = new User({ hoTen, taiKhoan, matKhau, soDienThoai, email });
     user.save()
         .then(newUser => res.status(200).send({ success: true, newUser }))
