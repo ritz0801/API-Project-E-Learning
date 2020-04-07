@@ -92,6 +92,7 @@ app.post('/api/QuanLyNguoiDung/DangKy', async (req, res) => {
         const { hoTen, taiKhoan, matKhau, soDienThoai, email } = req.body;
         const user = new User({ hoTen, taiKhoan, matKhau, soDienThoai, email });
         if (await User.findOne({ taiKhoan })) {
+            res.status(401).send({ success: false, message: "Tài khoản đã tồn tại!" });
             throw 'Tài khoản "' + taiKhoan + '" đã tồn tại!';
         }
         else {
@@ -99,7 +100,7 @@ app.post('/api/QuanLyNguoiDung/DangKy', async (req, res) => {
             res.status(200).send({ success: true, user })
         }
     } catch (error) {
-        res.status(error.status).send({ success: false, error })
+        res.status(401).send({ success: false, error })
     }
 })
 
