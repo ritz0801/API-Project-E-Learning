@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 
 const UserSchema = new mongoose.Schema({
     hoTen: String,
-    taiKhoan: { type: String, unique: true },
+    taiKhoan: { type: String },
     matKhau: String,
     soDienThoai: String,
     email: { type: String, unique: true },
