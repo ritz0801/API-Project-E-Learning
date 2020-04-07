@@ -2,10 +2,10 @@ const mongoose = require('mongoose');
 
 const UserSchema = new mongoose.Schema({
     hoTen: String,
-    taiKhoan: { type: String, required: true, trim: true, unique: true },
+    taiKhoan: String,
     matKhau: String,
     soDienThoai: String,
-    email: { type: String },
+    email: String,
     ngayTao: { type: Date, default: Date.now },
     maLoaiNguoiDung: { type: String, default: 'HV' },
     mangKhoaHoc: Array,
