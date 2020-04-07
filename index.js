@@ -72,11 +72,20 @@ app.get('/api/QuanLyKhoaHoc/LayKhoaHocTheoDanhMuc', async (req, res) => {
         res.status(200).send({ success: true, courses })
 
     } catch (error) {
-        res.status(error.status).set({ success: false, err })
+        res.status(error.status).set({ success: false, error })
     }
 })
 
 //USER
+
+app.get('/api/QuanLyNguoiDung/LayDanhSachNguoiDung', async (req, res) => {
+    try {
+        const users = await User.find({})
+        res.status(200).send({ success: true, users })
+    } catch (error) {
+        res.status(error.status).set({ success: false, error })
+    }
+})
 
 app.post('/api/QuanLyNguoiDung/DangKy', async (req, res) => {
     try {
