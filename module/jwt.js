@@ -1,8 +1,8 @@
-import { sign, verify } from 'jsonwebtoken';
+const { sign, verify } = require('jsonwebtoken');
 
 const SECRET_KEY = "phamtanphat";
 
-function signPromise(object) {
+const signPromise = (object) => {
     return new Promise((resolve, reject) => {
         sign(object, SECRET_KEY, { expiresIn: '10 days' }, (error, token) => {
             if (error) return reject(error)
@@ -10,7 +10,7 @@ function signPromise(object) {
         });
     });
 }
-function verifyPromise(token) {
+const verifyPromise = (token) => {
     return new Promise((resolve, reject) => {
         verify(token, SECRET_KEY, (error, object) => {
             if (error) return reject(error)
@@ -19,4 +19,4 @@ function verifyPromise(token) {
     });
 }
 
-export default { verifyPromise, signPromise }
+module.exports = { verifyPromise, signPromise }

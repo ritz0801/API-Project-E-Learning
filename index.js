@@ -4,13 +4,12 @@ const User = require('./module/user');
 const express = require('express');
 const cors = require('cors')
 const { json } = require("body-parser");
-const jwt = require('jsonwebtoken');
-const { hash, compare } = require('bcrypt');
+const { hash, compare } = require('bcryptjs');
 const app = express();
 const { verifyPromise, signPromise } = require('./module/jwt');
 
 
-
+// mongodb+srv://abc:12345678910@course-eon1f.mongodb.net/test?retryWrites=true&w=majority
 app.use(json());
 app.use(cors());
 mongoose.connect('mongodb+srv://abc:12345678910@course-eon1f.mongodb.net/test?retryWrites=true&w=majority', { useNewUrlParser: true, useUnifiedTopology: true })
@@ -112,15 +111,19 @@ app.post('/api/QuanLyNguoiDung/DangNhap', async (req, res) => {
         const { taiKhoan, matKhau } = req.body;
         const user = await User.findOne({ taiKhoan });
         if (!user) {
-            throw new Error();
+            return res.status(400).send({ success: false, message: 'INVALID_USER_INFO' })
         }
 
-        const passwordValidated = await bcrypt.compare(matKhau, user.matKhau);
+        const passwordValidated = await compare(matKhau, user.matKhau);
         if (!passwordValidated) {
-            throw new Error();
+            return res.status(400).send({ success: false, message: 'INVALID_USER_INFO' })
         }
 
-        res.status(200).send({ success: true, user })
+        const token = await signPromise({ taiKhoan: user.taiKhoan });
+        const userInfo = user.toObject();
+        userInfo.matKhau = undefined;
+        userInfo.token = token;
+        res.send({ success: true, user: userInfo });
     } catch (error) {
         res.status(error.status).set({ success: false, error })
     }
