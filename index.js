@@ -90,9 +90,9 @@ app.get('/api/QuanLyNguoiDung/LayDanhSachNguoiDung', async (req, res) => {
 
 app.post('/api/QuanLyNguoiDung/DangKy', async (req, res) => {
     try {
-        const { hoTen, taiKhoan, matKhau, soDienThoai, email } = req.body;
+        const { hoTen, taiKhoan, matKhau, soDienThoai, email, maLoaiNguoiDung } = req.body;
         const encrypt = await hash(matKhau, 8);
-        const user = new User({ hoTen, taiKhoan, matKhau: encrypt, soDienThoai, email });
+        const user = new User({ hoTen, taiKhoan, matKhau: encrypt, soDienThoai, email, maLoaiNguoiDung });
         if (await User.findOne({ taiKhoan })) {
             res.status(401).send({ success: false, message: "Tài khoản đã tồn tại!" });
             throw 'Tài khoản "' + taiKhoan + '" đã tồn tại!';
