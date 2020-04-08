@@ -5,8 +5,10 @@ const express = require('express');
 const cors = require('cors')
 const { json } = require("body-parser");
 const jwt = require('jsonwebtoken');
-const bcrypt = require('bcryptjs');
+const { hash, compare } = require('bcrypt');
 const app = express();
+const { verifyPromise, signPromise } = require('./module/jwt');
+
 
 
 app.use(json());
@@ -90,7 +92,8 @@ app.get('/api/QuanLyNguoiDung/LayDanhSachNguoiDung', async (req, res) => {
 app.post('/api/QuanLyNguoiDung/DangKy', async (req, res) => {
     try {
         const { hoTen, taiKhoan, matKhau, soDienThoai, email } = req.body;
-        const user = new User({ hoTen, taiKhoan, matKhau, soDienThoai, email });
+        const encrypt = await hash(matKhau, 8);
+        const user = new User({ hoTen, taiKhoan, matKhau: encrypt, soDienThoai, email });
         if (await User.findOne({ taiKhoan })) {
             res.status(401).send({ success: false, message: "Tài khoản đã tồn tại!" });
             throw 'Tài khoản "' + taiKhoan + '" đã tồn tại!';
