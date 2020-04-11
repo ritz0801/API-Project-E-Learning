@@ -1,6 +1,6 @@
 const { sign, verify } = require('jsonwebtoken');
 
-const SECRET_KEY = "phamtanphat";
+const SECRET_KEY = "voanhdung";
 
 const signPromise = (object) => {
     return new Promise((resolve, reject) => {
