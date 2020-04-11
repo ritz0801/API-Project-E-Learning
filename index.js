@@ -73,7 +73,17 @@ app.get('/api/QuanLyKhoaHoc/LayKhoaHocTheoDanhMuc', async (req, res) => {
         res.status(200).send({ success: true, courses })
 
     } catch (error) {
-        res.status(error.status).set({ success: false, error })
+        res.status(400).send({ success: false, error })
+    }
+})
+
+app.get('/api/QuanLyKhoaHoc/LayThongTinKhoaHoc', async (req, res) => {
+    try {
+        const _id = req.query._id;
+        const courseDetail = await Course.find({ _id })
+        res.status(200).send({ success: true, courseDetail })
+    } catch (error) {
+        res.status(401).send({ success: false, error })
     }
 })
 
