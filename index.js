@@ -80,12 +80,13 @@ app.get('/api/QuanLyKhoaHoc/LayKhoaHocTheoDanhMuc', async (req, res) => {
 app.get('/api/QuanLyKhoaHoc/LayThongTinKhoaHoc', async (req, res) => {
     try {
         const _id = req.query._id;
-        const courseDetail = await Course.find({ _id })
+        const courseDetail = await Course.findOne({ _id })
         res.status(200).send({ success: true, courseDetail })
     } catch (error) {
         res.status(401).send({ success: false, error })
     }
 })
+
 
 //USER
 
