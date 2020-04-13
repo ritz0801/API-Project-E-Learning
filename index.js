@@ -35,12 +35,12 @@ app.get('/api/QuanLyKhoaHoc/LayDanhSachKhoaHoc', (req, res) => {
 });
 
 app.post("/api/QuanLyKhoaHoc/ThemKhoaHoc", (req, res) => {
-    const { tenKhoaHoc, moTa, hinhAnh, luotXem, taiKhoanNguoiTao, maDanhMuc } = req.body
+    const { tenKhoaHoc, moTa, hinhAnh, gia, luotXem, taiKhoanNguoiTao, maDanhMuc } = req.body
     if (tenKhoaHoc.trim() === '' || moTa.trim() === '' || hinhAnh.trim() === '' || luotXem.trim() === '' || taiKhoanNguoiTao.trim() === '' || maDanhMuc.trim() === '') {
         res.status(401);
         return res.send({ success: false, message: "Emty value" });
     }
-    const newCourse = new Course({ tenKhoaHoc, moTa, hinhAnh, luotXem, taiKhoanNguoiTao, maDanhMuc })
+    const newCourse = new Course({ tenKhoaHoc, moTa, hinhAnh, gia, luotXem, taiKhoanNguoiTao, maDanhMuc })
     newCourse.save()
         .then(course => res.send({ success: true, data: course }))
         .catch(error => res.send({ success: false, message: error }))
@@ -57,7 +57,7 @@ app.put('/api/QuanLyKhoaHoc/SuaKhoaHoc', (req, res) => {
     const _id = req.query._id;
     const { tenKhoaHoc, moTa, hinhAnh, luotXem, taiKhoanNguoiTao, maDanhMuc } = req.body;
 
-    Course.findOneAndUpdate({ _id }, { tenKhoaHoc, moTa, hinhAnh, luotXem, taiKhoanNguoiTao, maDanhMuc }, { new: true })
+    Course.findOneAndUpdate({ _id }, { tenKhoaHoc, moTa, hinhAnh, gia, luotXem, taiKhoanNguoiTao, maDanhMuc }, { new: true })
         .then(course => {
             if (!course) throw new Error("EMPTY_COURSE");
             res.send({ success: true, course: course });

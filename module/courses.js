@@ -5,6 +5,7 @@ const CourseSchema = new mongoose.Schema({
     tenKhoaHoc: String,
     moTa: String,
     hinhAnh: String,
+    gia: String,
     luotXem: String,
     taiKhoanNguoiTao: String,
     maDanhMuc: String,
