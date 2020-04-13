@@ -55,7 +55,7 @@ app.delete("/api/QuanLyKhoaHoc/XoaKhoaHoc", async (req, res) => {
 
 app.put('/api/QuanLyKhoaHoc/SuaKhoaHoc', (req, res) => {
     const _id = req.query._id;
-    const { tenKhoaHoc, moTa, hinhAnh, luotXem, taiKhoanNguoiTao, maDanhMuc } = req.body;
+    const { tenKhoaHoc, moTa, hinhAnh, gia, luotXem, taiKhoanNguoiTao, maDanhMuc } = req.body;
 
     Course.findOneAndUpdate({ _id }, { tenKhoaHoc, moTa, hinhAnh, gia, luotXem, taiKhoanNguoiTao, maDanhMuc }, { new: true })
         .then(course => {
