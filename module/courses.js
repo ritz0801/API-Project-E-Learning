@@ -9,6 +9,7 @@ const CourseSchema = new mongoose.Schema({
     luotXem: String,
     taiKhoanNguoiTao: String,
     maDanhMuc: String,
+    mucLuc: Array,
 })
 
 const Course = mongoose.model('Course', CourseSchema);
