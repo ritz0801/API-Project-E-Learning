@@ -146,10 +146,10 @@ app.put('/api/QuanLyNguoiDung/SuaThongTin', async (req, res) => {
         const { hoTen, taiKhoan, matKhau, soDienThoai, email } = req.body;
         const encrypt = await hash(matKhau, 8);
         Course.findOneAndUpdate({ _id }, { hoTen, taiKhoan, matKhau: encrypt, soDienThoai, email }, { new: true })
-        res.send({ success: true, newInfoUser: user });
+        res.status(200).send({ success: true, newInfoUser: user });
     }
     catch (err) {
-        res.send({ success: false, message: err.message });
+        res.status(401).send({ success: false, message: err.message });
     }
 
 });
