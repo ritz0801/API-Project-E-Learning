@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
+const Lesson = require('./lessons');
 
 const CourseSchema = new mongoose.Schema({
-    maKhoaHoc: String,
     tenKhoaHoc: String,
     moTa: String,
     hinhAnh: String,
@@ -9,7 +9,7 @@ const CourseSchema = new mongoose.Schema({
     luotXem: String,
     taiKhoanNguoiTao: String,
     maDanhMuc: String,
-    mucLuc: Array,
+
 })
 
 const Course = mongoose.model('Course', CourseSchema);
