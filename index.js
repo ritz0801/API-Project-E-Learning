@@ -140,17 +140,17 @@ app.post('/api/QuanLyNguoiDung/DangNhap', async (req, res) => {
     }
 })
 
-app.put('/api/QuanLyNguoiDung/SuaThongTin', async (req, res) => {
-    try {
-        const _id = req.query._id;
-        const { hoTen, taiKhoan, matKhau, soDienThoai, email } = req.body;
-        const encrypt = await hash(matKhau, 8);
-        User.findOneAndUpdate({ _id }, { hoTen, taiKhoan, matKhau: encrypt, soDienThoai, email }, { new: true })
-        res.status(200).send({ success: true, newInfoUser: user });
-    }
-    catch (err) {
-        res.status(401).send({ success: false, message: err.message });
-    }
+app.put('/api/QuanLyNguoiDung/SuaThongTin', (req, res) => {
+    const _id = req.query._id;
+    const { hoTen, taiKhoan, soDienThoai, email, matKhau } = req.body;
+    const encrypt = await hash(matKhau, 8);
+    User.findOneAndUpdate({ _id }, { hoTen, taiKhoan, soDienThoai, email, matKhau: encrypt }, { new: true })
+        .then(newUserInfo => {
+            if (!newUserInfo) throw new Error("EMPTY_USER");
+            res.status(200).send({ success: true, newUserInfo });
+        })
+        .catch(error => res.status(401).send({ success: false, message: error.message }));
+
 });
 
 app.listen(process.env.PORT || 3005, () => console.log())
