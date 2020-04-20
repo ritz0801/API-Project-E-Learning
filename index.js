@@ -145,13 +145,12 @@ app.put('/api/QuanLyNguoiDung/SuaThongTin', async (req, res) => {
         const _id = req.query._id;
         const { hoTen, taiKhoan, matKhau, soDienThoai, email } = req.body;
         const encrypt = await hash(matKhau, 8);
-        Course.findOneAndUpdate({ _id }, { hoTen, taiKhoan, matKhau: encrypt, soDienThoai, email }, { new: true })
+        User.findOneAndUpdate({ _id }, { hoTen, taiKhoan, matKhau: encrypt, soDienThoai, email }, { new: true })
         res.status(200).send({ success: true, newInfoUser: user });
     }
     catch (err) {
         res.status(401).send({ success: false, message: err.message });
     }
-
 });
 
 app.listen(process.env.PORT || 3005, () => console.log())
