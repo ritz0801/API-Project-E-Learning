@@ -8,7 +8,6 @@ const UserSchema = new mongoose.Schema({
     email: String,
     ngayTao: { type: Date, default: Date.now },
     maLoaiNguoiDung: { type: String, default: 'HV' },
-    mangKhoaHoc: Array,
 });
 
 const User = mongoose.model('User', UserSchema);

@@ -140,16 +140,17 @@ app.post('/api/QuanLyNguoiDung/DangNhap', async (req, res) => {
     }
 })
 
-app.put('/api/QuanLyNguoiDung/SuaThongTin', (req, res) => {
-    const _id = req.query._id;
-    const { hoTen, taiKhoan, matKhau, soDienThoai, email } = req.body;
-    const encrypt = await hash(matKhau, 8);
-    Course.findOneAndUpdate({ _id }, { hoTen, taiKhoan, matKhau: encrypt, soDienThoai, email }, { new: true })
-        .then(user => {
-            if (!user) throw new Error("EMPTY_USER");
-            res.send({ success: true, newInfoUser: user });
-        })
-        .catch(error => res.send({ success: false, message: error.message }));
+app.put('/api/QuanLyNguoiDung/SuaThongTin', async (req, res) => {
+    try {
+        const _id = req.query._id;
+        const { hoTen, taiKhoan, matKhau, soDienThoai, email } = req.body;
+        const encrypt = await hash(matKhau, 8);
+        Course.findOneAndUpdate({ _id }, { hoTen, taiKhoan, matKhau: encrypt, soDienThoai, email }, { new: true })
+        res.send({ success: true, newInfoUser: user });
+    }
+    catch (err) {
+        res.send({ success: false, message: err.message });
+    }
 
 });
 
