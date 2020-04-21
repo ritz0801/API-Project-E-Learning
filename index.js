@@ -196,10 +196,13 @@ app.post('/api/QuanLyNguoiDung/DangNhap', async (req, res) => {
 app.put('/api/QuanLyNguoiDung/SuaThongTin', async (req, res) => {
     try {
         const _id = req.query._id;
-        const { hoTen, taiKhoan, matKhau, soDienThoai, email, maLoaiNguoiDung, ngayTao } = req.body;
+        const { matKhau } = req.body;
         const encrypt = await hash(matKhau, 8);
-        const newInfoUser = User.findOneAndUpdate({ _id }, { hoTen, taiKhoan, matKhau: encrypt, soDienThoai, email, maLoaiNguoiDung, ngayTao }, { new: true })
-        res.status(200).send({ success: true, newInfoUser });
+        User.findOneAndUpdate({ _id }, { matKhau: encrypt }, { new: true })
+            .then(newInfoUser => {
+                delete newInfoUser.matKhau
+                res.status(200).send({ success: true, newInfoUser });
+            })
     }
     catch (err) {
         res.status(401).send({ success: false, message: err.message });
