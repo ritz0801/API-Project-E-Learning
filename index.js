@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 const Course = require('./module/courses');
 const User = require('./module/user');
+const Lesson = require('./module/lessons');
 const express = require('express');
 const cors = require('cors')
 const { json } = require("body-parser");
@@ -10,6 +11,7 @@ const { verifyPromise, signPromise } = require('./module/jwt');
 
 
 // mongodb+srv://abc:12345678910@course-eon1f.mongodb.net/test?retryWrites=true&w=majority
+// mongodb://localhost:27017/test
 app.use(json());
 app.use(cors());
 mongoose.connect('mongodb+srv://abc:12345678910@course-eon1f.mongodb.net/test?retryWrites=true&w=majority', { useNewUrlParser: true, useUnifiedTopology: true })
@@ -85,6 +87,34 @@ app.get('/api/QuanLyKhoaHoc/LayThongTinKhoaHoc', async (req, res) => {
     } catch (error) {
         res.status(401).send({ success: false, error })
     }
+})
+
+app.get('/api/QuanLyKhoaHoc/LuuBaiHoc', async (req, res) => {
+    const tieuDe = ["Giới thiệu về ES6", "Hoisting trong JavaScript", "var, let, const", "function context & bind", "Arrow function expression (Part 1)", "Arrow function expression (Part 2)", "Template string", "rest", "spread", "Closure", "Higer order functions", "Destructuring"]
+    const linkVideo = [
+        "https://www.youtube.com/embed/2LeqilIw-28",
+        "https://www.youtube.com/embed/sZ0z7B7QmjI",
+        "https://www.youtube.com/embed/KWUcTt15fQs",
+        "https://www.youtube.com/embed/RBLIm5LMrmc",
+        "https://www.youtube.com/embed/INPob8yPyBo",
+        "https://www.youtube.com/embed/XGG-OY8pJqA",
+        "https://www.youtube.com/embed/Stne4zasR8M",
+        "https://www.youtube.com/embed/ycohYSx5h9w",
+        "https://www.youtube.com/embed/u4URamXstM0",
+        "https://www.youtube.com/embed/XJEHuBZQ5dU",
+        "https://www.youtube.com/embed/dcP039DYzmE",
+        "https://www.youtube.com/embed/dcP039DYzmE"
+    ]
+    for (let i = 0; i < tieuDe.length; i++) {
+        const newLesson = new Lesson({
+            idCourse: "5e8cc92b4abbf500244588a7",
+            tieuDe: tieuDe[i],
+            linkVideo: linkVideo[i]
+        })
+        newLesson.save()
+    }
+    Lesson.find({})
+        .then(data => res.send({ data }));
 })
 
 

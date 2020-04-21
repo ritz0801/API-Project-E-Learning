@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 
 const LessonSchema = new mongoose.Schema({
+    idCourse: String,
     tieuDe: String,
     linkVideo: String,
 });
