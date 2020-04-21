@@ -91,7 +91,6 @@ app.get('/api/QuanLyKhoaHoc/LayThongTinKhoaHoc', async (req, res) => {
 
 app.get('/api/QuanLyKhoaHoc/LuuBaiHoc', async (req, res) => {
     const _id = req.query._id;
-    console.log(_id)
     const tieuDe = ["Giới thiệu về ES6", "Hoisting trong JavaScript", "var, let, const", "function context & bind", "Arrow function expression (Part 1)", "Arrow function expression (Part 2)", "Template string", "rest", "spread", "Closure", "Higer order functions", "Destructuring"]
     const linkVideo = [
         "https://www.youtube.com/embed/2LeqilIw-28",
