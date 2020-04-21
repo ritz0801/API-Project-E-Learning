@@ -200,8 +200,9 @@ app.put('/api/QuanLyNguoiDung/SuaThongTin', async (req, res) => {
         const encrypt = await hash(matKhau, 8);
         User.findOneAndUpdate({ _id }, { matKhau: encrypt }, { new: true })
             .then(newInfoUser => {
-                delete newInfoUser.matKhau
-                res.status(200).send({ success: true, newInfoUser });
+                const user = newInfoUser
+                delete user.matKhau
+                res.status(200).send({ success: true, user });
             })
     }
     catch (err) {
