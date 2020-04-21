@@ -90,6 +90,7 @@ app.get('/api/QuanLyKhoaHoc/LayThongTinKhoaHoc', async (req, res) => {
 })
 
 app.get('/api/QuanLyKhoaHoc/LuuBaiHoc', async (req, res) => {
+    const _id = req.query._id;
     const tieuDe = ["Giới thiệu về ES6", "Hoisting trong JavaScript", "var, let, const", "function context & bind", "Arrow function expression (Part 1)", "Arrow function expression (Part 2)", "Template string", "rest", "spread", "Closure", "Higer order functions", "Destructuring"]
     const linkVideo = [
         "https://www.youtube.com/embed/2LeqilIw-28",
@@ -107,7 +108,7 @@ app.get('/api/QuanLyKhoaHoc/LuuBaiHoc', async (req, res) => {
     ]
     for (let i = 0; i < tieuDe.length; i++) {
         const newLesson = new Lesson({
-            idCourse: "5e8cc92b4abbf500244588a7",
+            idCourse: _id,
             tieuDe: tieuDe[i],
             linkVideo: linkVideo[i]
         })
@@ -116,6 +117,28 @@ app.get('/api/QuanLyKhoaHoc/LuuBaiHoc', async (req, res) => {
     Lesson.find({})
         .then(data => res.send({ data }));
 })
+
+app.get('/api/InsertMucluc', async (req, res) => {
+    const _id = req.query._id;
+
+    const arrayMucluc = []
+
+    const data = await Lesson.find({})
+    data.map(lesson => {
+        if (lesson.idCourse === _id) {
+            arrayMucluc.push(lesson)
+        }
+    })
+
+    if (arrayMucluc.length > 0) {
+        Course.findOneAndUpdate({ _id }, { mucLuc: arrayMucluc }, { new: true })
+            .then(course => {
+                if (!course) throw new Error("EMPTY_COURSE");
+                res.send({ success: true, course: course });
+            })
+            .catch(error => res.send({ success: false, message: error.message }));
+    }
+});
 
 
 //USER
