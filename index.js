@@ -89,6 +89,22 @@ app.get('/api/QuanLyKhoaHoc/LayThongTinKhoaHoc', async (req, res) => {
     }
 })
 
+app.get('/api/QuanLyKhoaHoc/LayDanhSachBaiHoc', (req, res) => {
+    Lesson.find({})
+        .then(lessons => res.send({ success: true, lessons }))
+        .catch(err => res.set({ success: false, err }))
+})
+
+app.get('/api/QuanLyKhoaHoc/LayThongTinBaiHoc', async (req, res) => {
+    try {
+        const _id = req.query._id;
+        const lessonDetail = await Lesson.findOne({ _id })
+        res.status(200).send({ success: true, lessonDetail })
+    } catch (error) {
+        res.status(401).send({ success: false, error })
+    }
+})
+
 app.get('/api/QuanLyKhoaHoc/LuuBaiHoc', async (req, res) => {
     const _id = req.query._id;
     const tieuDe = ["Giới thiệu về ES6", "Hoisting trong JavaScript", "var, let, const", "function context & bind", "Arrow function expression (Part 1)", "Arrow function expression (Part 2)", "Template string", "rest", "spread", "Closure", "Higer order functions", "Destructuring"]
