@@ -2,18 +2,36 @@ const mongoose = require('mongoose');
 const Course = require('./module/courses');
 const User = require('./module/user');
 const Lesson = require('./module/lessons');
+const Photo = require('./module/photo');
 const express = require('express');
 const cors = require('cors')
-const { json } = require("body-parser");
+const { json, urlencoded } = require("body-parser");
 const { hash, compare } = require('bcryptjs');
 const app = express();
+const fs = require('fs');
+const multer = require('multer');
+const GridFsStorage = require('multer-gridfs-storage');
 const { verifyPromise, signPromise } = require('./module/jwt');
+const crypto = require("crypto");
+const Grid = require("gridfs-stream");
+
 
 
 // mongodb+srv://abc:12345678910@course-eon1f.mongodb.net/test?retryWrites=true&w=majority
 // mongodb://localhost:27017/test
 app.use(json());
 app.use(cors());
+app.use(urlencoded({ extended: true }));
+
+// app.use(multer({
+//     dest: './avatar/',
+//     rename: function (fieldname, filename) {
+//         return filename;
+//     },
+// }));
+
+const conn = mongoose.createConnection('mongodb+srv://abc:12345678910@course-eon1f.mongodb.net/test?retryWrites=true&w=majority')
+
 mongoose.connect('mongodb+srv://abc:12345678910@course-eon1f.mongodb.net/test?retryWrites=true&w=majority', { useNewUrlParser: true, useUnifiedTopology: true })
     .then(() => console.log("Connected to MongoDB"))
     .catch((err) => console.log("Error" + err))
@@ -209,23 +227,94 @@ app.post('/api/QuanLyNguoiDung/DangNhap', async (req, res) => {
     }
 })
 
-app.put('/api/QuanLyNguoiDung/SuaThongTin', async (req, res) => {
+
+const storage = new GridFsStorage({
+    url: 'mongodb+srv://abc:12345678910@course-eon1f.mongodb.net/test?retryWrites=true&w=majority',
+    file: (req, file) => {
+        return new Promise((resolve, reject) => {
+            crypto.randomBytes(16, (err, buf) => {
+                if (err) {
+                    return reject(err)
+                }
+                const filename = file.originalname
+                const fileInfo = {
+                    filename: new Date().getTime() + filename,
+                    bucketName: 'uploads',
+                }
+                resolve(fileInfo)
+            })
+        })
+    },
+})
+
+const upload = multer({ storage })
+
+app.put('/api/QuanLyNguoiDung/SuaThongTin', upload.single('avatar'), async (req, res) => {
     try {
         const _id = req.query._id;
         const { matKhau } = req.body;
-        const encrypt = await hash(matKhau, 8);
-        User.findOneAndUpdate({ _id }, { matKhau: encrypt }, { new: true })
-            .then(newInfoUser => {
-                const user = newInfoUser;
-                user.matKhau = undefined;
-                res.status(200).send({ success: true, user });
-            })
+        const file = req.file;
+        if (matKhau && !file) {
+            const encrypt = await hash(matKhau, 8);
+            User.findOneAndUpdate({ _id }, { matKhau: encrypt }, { new: true })
+                .then(newInfoUser => {
+                    const user = newInfoUser;
+                    user.matKhau = undefined;
+                    res.status(200).send({ success: true, user });
+                })
+        }
+        if (file && !matKhau) {
+            User.findOneAndUpdate({ _id }, { avatar: req.file.filename }, { new: true })
+                .then(newInfoUser => {
+                    const user = newInfoUser;
+                    user.matKhau = undefined;
+                    res.status(200).send({ success: true, user });
+                })
+        }
+        if (matKhau && file) {
+            const encrypt = await hash(matKhau, 8);
+            User.findOneAndUpdate({ _id }, { matKhau: encrypt, avatar: req.file.filename }, { new: true })
+                .then(newInfoUser => {
+                    const user = newInfoUser;
+                    user.matKhau = undefined;
+                    res.status(200).send({ success: true, user });
+                })
+        }
+
     }
     catch (err) {
         res.status(401).send({ success: false, message: err.message });
     }
 });
 
+let gfs
+
+conn.once('open', () => {
+    gfs = Grid(conn.db, mongoose.mongo)
+    gfs.collection('uploads')
+    console.log('Connection Successful')
+})
+app.get('/:filename', (req, res) => {
+    gfs.files.findOne({ filename: req.params.filename }, (err, file) => {
+        // Check if file
+        if (!file || file.length === 0) {
+            return res.status(404).json({
+                err: 'No file exists',
+            })
+        }
+
+        // Check if image
+        if (file.contentType === 'image/jpeg' || file.contentType === 'image/png') {
+            // Read output to browser
+            const readstream = gfs.createReadStream(file.filename)
+            readstream.pipe(res)
+        } else {
+            res.status(404).json({
+                err: 'Not an image',
+            })
+        }
+    })
+})
 app.listen(process.env.PORT || 3005, () => console.log())
 
 

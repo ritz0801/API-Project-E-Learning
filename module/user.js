@@ -6,6 +6,7 @@ const UserSchema = new mongoose.Schema({
     matKhau: String,
     soDienThoai: String,
     email: String,
+    avatar: String,
     ngayTao: { type: Date, default: Date.now },
     maLoaiNguoiDung: { type: String, default: 'HV' },
 });
