@@ -6,7 +6,7 @@ const UserSchema = new mongoose.Schema({
     matKhau: String,
     soDienThoai: String,
     email: String,
-    avatar: String,
+    avatar: { type: String, default: 'http://courseserver.herokuapp.com/1587968841249user-default.png' },
     ngayTao: { type: Date, default: Date.now },
     maLoaiNguoiDung: { type: String, default: 'HV' },
 });
