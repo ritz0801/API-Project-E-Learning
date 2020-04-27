@@ -6,7 +6,7 @@ const UserSchema = new mongoose.Schema({
     matKhau: String,
     soDienThoai: String,
     email: String,
-    avatar: { type: String, default: '1587968841249user-default.png' },
+    avatar: { type: String, default: 'https://res.cloudinary.com/avata-user-store/image/upload/v1587982981/n6rdmmtxyjr0gttp8zo7.png' },
     ngayTao: { type: Date, default: Date.now },
     maLoaiNguoiDung: { type: String, default: 'HV' },
 });
