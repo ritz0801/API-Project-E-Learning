@@ -250,8 +250,8 @@ const upload = multer({ storage })
 app.put('/api/QuanLyNguoiDung/SuaThongTin', upload.single('avatar'), async (req, res) => {
     try {
         const _id = req.query._id;
-        const { matKhau } = req.body;
-        const file = req.file;
+        const { matKhau, file } = req.body;
+        // const file = req.file;
         if (matKhau && file === "") {
             const encrypt = await hash(matKhau, 8);
             User.findOneAndUpdate({ _id }, { matKhau: encrypt }, { new: true })
