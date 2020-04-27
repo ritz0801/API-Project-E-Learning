@@ -252,7 +252,7 @@ app.put('/api/QuanLyNguoiDung/SuaThongTin', upload.single('avatar'), async (req,
         const _id = req.query._id;
         const { matKhau } = req.body;
         const file = req.file;
-        if (matKhau && !file) {
+        if (matKhau && file === "") {
             const encrypt = await hash(matKhau, 8);
             User.findOneAndUpdate({ _id }, { matKhau: encrypt }, { new: true })
                 .then(newInfoUser => {
@@ -261,7 +261,7 @@ app.put('/api/QuanLyNguoiDung/SuaThongTin', upload.single('avatar'), async (req,
                     res.status(200).send({ success: true, user });
                 })
         }
-        if (file && !matKhau) {
+        if (file && matKhau === "") {
             User.findOneAndUpdate({ _id }, { avatar: req.file.filename }, { new: true })
                 .then(newInfoUser => {
                     const user = newInfoUser;
@@ -278,7 +278,6 @@ app.put('/api/QuanLyNguoiDung/SuaThongTin', upload.single('avatar'), async (req,
                     res.status(200).send({ success: true, user });
                 })
         }
-
     }
     catch (err) {
         res.status(401).send({ success: false, message: err.message });
