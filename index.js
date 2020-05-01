@@ -267,10 +267,9 @@ app.put('/api/QuanLyNguoiDung/UploadAvatar', async (req, res) => {
                     .then(newInfoUser => {
                         const user = newInfoUser;
                         user.matKhau = undefined;
+                        res.status(200).send({ success: true, user })
                     })
             })
-
-        res.status(200).send({ success: true, message: "Successfully!" })
     }
     catch (error) {
         res.status(400).send({ success: false, error })
