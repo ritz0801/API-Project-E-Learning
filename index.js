@@ -193,6 +193,16 @@ app.get('/api/QuanLyNguoiDung/LayDanhSachNguoiDung', async (req, res) => {
     }
 })
 
+app.get('/api/QuanLyNguoiDung/LayNguoiDungTheoID', async (req, res) => {
+    try {
+        const _id = req.query._id;
+        const userDetail = await User.findOne({ _id })
+        res.status(200).send({ success: true, userDetail })
+    } catch (error) {
+        res.status(401).send({ success: false, error })
+    }
+})
+
 app.post('/api/QuanLyNguoiDung/DangKy', async (req, res) => {
     try {
         const { hoTen, taiKhoan, matKhau, soDienThoai, email, maLoaiNguoiDung } = req.body;
