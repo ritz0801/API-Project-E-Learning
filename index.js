@@ -117,36 +117,55 @@ app.get('/api/QuanLyKhoaHoc/LayThongTinBaiHoc', async (req, res) => {
     }
 })
 
-app.get('/api/QuanLyKhoaHoc/LuuBaiHoc', async (req, res) => {
-    const _id = req.query._id;
-    const tieuDe = ["Giới thiệu về ES6", "Hoisting trong JavaScript", "var, let, const", "function context & bind", "Arrow function expression (Part 1)", "Arrow function expression (Part 2)", "Template string", "rest", "spread", "Closure", "Higer order functions", "Destructuring"]
-    const linkVideo = [
-        "https://www.youtube.com/embed/2LeqilIw-28",
-        "https://www.youtube.com/embed/sZ0z7B7QmjI",
-        "https://www.youtube.com/embed/KWUcTt15fQs",
-        "https://www.youtube.com/embed/RBLIm5LMrmc",
-        "https://www.youtube.com/embed/INPob8yPyBo",
-        "https://www.youtube.com/embed/XGG-OY8pJqA",
-        "https://www.youtube.com/embed/Stne4zasR8M",
-        "https://www.youtube.com/embed/ycohYSx5h9w",
-        "https://www.youtube.com/embed/u4URamXstM0",
-        "https://www.youtube.com/embed/XJEHuBZQ5dU",
-        "https://www.youtube.com/embed/dcP039DYzmE",
-        "https://www.youtube.com/embed/dcP039DYzmE"
-    ]
-    for (let i = 0; i < tieuDe.length; i++) {
+// app.get('/api/QuanLyKhoaHoc/LuuBaiHoc', async (req, res) => {
+//     const _id = req.query._id;
+//     const tieuDe = ["Giới thiệu về ES6", "Hoisting trong JavaScript", "var, let, const", "function context & bind", "Arrow function expression (Part 1)", "Arrow function expression (Part 2)", "Template string", "rest", "spread", "Closure", "Higer order functions", "Destructuring"]
+//     const linkVideo = [
+//         "https://www.youtube.com/embed/2LeqilIw-28",
+//         "https://www.youtube.com/embed/sZ0z7B7QmjI",
+//         "https://www.youtube.com/embed/KWUcTt15fQs",
+//         "https://www.youtube.com/embed/RBLIm5LMrmc",
+//         "https://www.youtube.com/embed/INPob8yPyBo",
+//         "https://www.youtube.com/embed/XGG-OY8pJqA",
+//         "https://www.youtube.com/embed/Stne4zasR8M",
+//         "https://www.youtube.com/embed/ycohYSx5h9w",
+//         "https://www.youtube.com/embed/u4URamXstM0",
+//         "https://www.youtube.com/embed/XJEHuBZQ5dU",
+//         "https://www.youtube.com/embed/dcP039DYzmE",
+//         "https://www.youtube.com/embed/dcP039DYzmE"
+//     ]
+//     for (let i = 0; i < tieuDe.length; i++) {
+//         const newLesson = new Lesson({
+//             idCourse: _id,
+//             tieuDe: tieuDe[i],
+//             linkVideo: linkVideo[i]
+//         })
+//         newLesson.save()
+//     }
+//     Lesson.find({})
+//         .then(data => res.send({ data }));
+// })
+
+app.post('/api/QuanLyKhoaHoc/ThemBaiHoc', async (req, res) => {
+    try {
+        const _id = req.query._id;
+        const { tieuDe, linkVideo } = req.body;
+
         const newLesson = new Lesson({
             idCourse: _id,
-            tieuDe: tieuDe[i],
-            linkVideo: linkVideo[i]
+            tieuDe: tieuDe,
+            linkVideo: linkVideo
         })
         newLesson.save()
+        res.status(200).send({ success: true, newLesson })
     }
-    Lesson.find({})
-        .then(data => res.send({ data }));
+    catch (err) {
+        res.status(400).send({ success: false, message: err.message })
+    }
+
 })
 
-app.get('/api/InsertMucluc', async (req, res) => {
+app.post('/api/QuanLyKhoaHoc/ThemBaiHocVaoMucLuc', async (req, res) => {
     const _id = req.query._id;
 
     const arrayMucluc = []
@@ -162,9 +181,9 @@ app.get('/api/InsertMucluc', async (req, res) => {
         Course.findOneAndUpdate({ _id }, { mucLuc: arrayMucluc }, { new: true })
             .then(course => {
                 if (!course) throw new Error("EMPTY_COURSE");
-                res.send({ success: true, course: course });
+                res.status(200).send({ success: true, course: course });
             })
-            .catch(error => res.send({ success: false, message: error.message }));
+            .catch(error => res.status(400).send({ success: false, message: error.message }));
     }
 });
 
