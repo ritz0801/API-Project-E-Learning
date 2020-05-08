@@ -296,6 +296,13 @@ app.put('/api/QuanLyNguoiDung/DoiMatKhau', async (req, res) => {
     }
 })
 
+app.delete("/api/QuanLyNguoiDung/XoaHocVien", async (req, res) => {
+    const _id = req.query._id;
+    User.findOneAndDelete({ _id })
+        .then(student => res.send({ success: true, data: student }))
+        .catch(error => res.send({ success: false, message: error }))
+})
+
 app.listen(process.env.PORT || 3005, () => console.log())
 
 
