@@ -199,6 +199,15 @@ app.get('/api/QuanLyNguoiDung/LayDanhSachNguoiDung', async (req, res) => {
     }
 })
 
+app.get('/api/QuanLyNguoiDung/LayDanhSachHocVien', async (req, res) => {
+    try {
+        const students = await User.find({ maLoaiNguoiDung: 'HV' })
+        res.status(200).send({ success: true, students })
+    } catch (error) {
+        res.status(400).send({ success: false, message: error.message })
+    }
+})
+
 app.get('/api/QuanLyNguoiDung/LayNguoiDungTheoID', async (req, res) => {
     try {
         const _id = req.query._id;
