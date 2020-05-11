@@ -1,5 +1,4 @@
 const mongoose = require('mongoose');
-const Lesson = require('./lessons');
 
 const CourseSchema = new mongoose.Schema({
     tenKhoaHoc: String,
