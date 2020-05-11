@@ -69,9 +69,9 @@ app.delete("/api/QuanLyKhoaHoc/XoaKhoaHoc", async (req, res) => {
 
 app.put('/api/QuanLyKhoaHoc/SuaKhoaHoc', (req, res) => {
     const _id = req.query._id;
-    const { tenKhoaHoc, moTa, hinhAnh, taiKhoanNguoiTao, maDanhMuc, mucLuc } = req.body;
+    const { tenKhoaHoc, moTa, hinhAnh, taiKhoanNguoiTao, maDanhMuc } = req.body;
 
-    Course.findOneAndUpdate({ _id }, { tenKhoaHoc, moTa, hinhAnh, taiKhoanNguoiTao, maDanhMuc, mucLuc }, { new: true })
+    Course.findOneAndUpdate({ _id }, { tenKhoaHoc, moTa, hinhAnh, taiKhoanNguoiTao, maDanhMuc }, { new: true })
         .then(course => {
             if (!course) throw new Error("EMPTY_COURSE");
             res.send({ success: true, course: course });
